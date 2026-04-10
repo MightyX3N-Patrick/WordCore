@@ -105,7 +105,7 @@ Storage::delete('namespace/key');
 ---
 
 ## 🔌 Official Addons
-Add **repo.wordcore.space** in your Settings to install these in one click:
+Add **https://repo.wordcore.space** in your Settings to install these in one click:
 
 | Addon | Description |
 | :--- | :--- |
