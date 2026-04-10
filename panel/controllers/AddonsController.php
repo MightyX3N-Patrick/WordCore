@@ -2,7 +2,7 @@
 
 class AddonsController {
     public static function index(array $p): void {
-        Auth::require();
+        wc_can('manage_addons');
         $addons  = AddonManager::getAll();
         $flash   = $_GET['msg'] ?? null;
         $error   = $_GET['err'] ?? null;
@@ -10,25 +10,25 @@ class AddonsController {
     }
 
     public static function activate(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_addons'); Auth::verifyCsrf();
         AddonManager::activate($_POST['slug'] ?? '');
         WordCore::redirect('/wc-admin/addons?msg=activated');
     }
 
     public static function deactivate(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_addons'); Auth::verifyCsrf();
         AddonManager::deactivate($_POST['slug'] ?? '');
         WordCore::redirect('/wc-admin/addons?msg=deactivated');
     }
 
     public static function delete(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_addons'); Auth::verifyCsrf();
         AddonManager::delete($_POST['slug'] ?? '');
         WordCore::redirect('/wc-admin/addons?msg=deleted');
     }
 
     public static function upload(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_addons'); Auth::verifyCsrf();
         if (empty($_FILES['zip']) || $_FILES['zip']['error'] !== UPLOAD_ERR_OK) {
             WordCore::redirect('/wc-admin/addons?err=upload_failed');
         }
@@ -41,7 +41,7 @@ class AddonsController {
     }
 
     public static function browse(array $p): void {
-        Auth::require();
+        wc_can('manage_addons');
         $repos    = Storage::get('core/repos', []);
         $packages = [];
         foreach ($repos as $repo) {
@@ -64,7 +64,7 @@ class AddonsController {
     }
 
     public static function installRemote(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_addons'); Auth::verifyCsrf();
         $url = $_POST['url'] ?? '';
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             WordCore::redirect('/wc-admin/addons/browse?err=invalid_url');

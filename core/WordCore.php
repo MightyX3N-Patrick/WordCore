@@ -1,5 +1,15 @@
 <?php
 
+// Helper: check a capability if wc-roles is active, otherwise just require login
+function wc_can(string $cap): void {
+    Auth::require();
+    if (class_exists('Roles') && !Roles::can($cap)) {
+        $base = rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');
+        header('Location: ' . $base . '/wc-admin?err=unauthorized');
+        exit;
+    }
+}
+
 class WordCore {
     public static function base(): string {
         return rtrim(dirname($_SERVER['SCRIPT_NAME'] ?? ''), '/');

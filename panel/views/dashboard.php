@@ -4,6 +4,10 @@
   <h1 class="page-title">Dashboard</h1>
 </div>
 
+<?php if (($_GET['err'] ?? '') === 'unauthorized'): ?>
+  <div class="flash flash-err">You do not have permission to access that page.</div>
+<?php endif; ?>
+
 <div class="stat-grid">
   <div class="stat-card">
     <div class="stat-label">Addons</div>

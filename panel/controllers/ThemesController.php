@@ -2,7 +2,7 @@
 
 class ThemesController {
     public static function index(array $p): void {
-        Auth::require();
+        wc_can('manage_themes');
         $themes = ThemeManager::getAll();
         $flash  = $_GET['msg'] ?? null;
         $error  = $_GET['err'] ?? null;
@@ -10,13 +10,13 @@ class ThemesController {
     }
 
     public static function activate(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_themes'); Auth::verifyCsrf();
         ThemeManager::activate($_POST['slug'] ?? '');
         WordCore::redirect('/wc-admin/themes?msg=activated');
     }
 
     public static function delete(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_themes'); Auth::verifyCsrf();
         $slug = $_POST['slug'] ?? '';
         if (!ThemeManager::delete($slug)) {
             WordCore::redirect('/wc-admin/themes?err=cannot_delete_active');
@@ -26,7 +26,7 @@ class ThemesController {
     }
 
     public static function upload(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_themes'); Auth::verifyCsrf();
         if (empty($_FILES['zip']) || $_FILES['zip']['error'] !== UPLOAD_ERR_OK) {
             WordCore::redirect('/wc-admin/themes?err=upload_failed');
         }
@@ -39,7 +39,7 @@ class ThemesController {
     }
 
     public static function browse(array $p): void {
-        Auth::require();
+        wc_can('manage_themes');
         $repos    = Storage::get('core/repos', []);
         $packages = [];
         foreach ($repos as $repo) {
@@ -62,7 +62,7 @@ class ThemesController {
     }
 
     public static function installRemote(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_themes'); Auth::verifyCsrf();
         $url = $_POST['url'] ?? '';
         if (!filter_var($url, FILTER_VALIDATE_URL)) {
             WordCore::redirect('/wc-admin/themes/browse?err=invalid_url');

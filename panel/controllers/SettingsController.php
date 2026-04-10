@@ -2,7 +2,7 @@
 
 class SettingsController {
     public static function index(array $p): void {
-        Auth::require();
+        wc_can('manage_settings');
         $settings = Storage::get('core/settings', []);
         $repos    = Storage::get('core/repos', []);
         $flash    = $_GET['msg'] ?? null;
@@ -12,7 +12,7 @@ class SettingsController {
     }
 
     public static function saveGeneral(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_settings'); Auth::verifyCsrf();
         $settings = Storage::get('core/settings', []);
         $settings['site_name'] = trim($_POST['site_name'] ?? 'WordCore Site');
         Storage::set('core/settings', $settings);
@@ -20,7 +20,7 @@ class SettingsController {
     }
 
     public static function addRepo(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_settings'); Auth::verifyCsrf();
         $name = trim($_POST['name'] ?? '');
         $url  = trim($_POST['url']  ?? '');
         $type = $_POST['type'] ?? 'both';
@@ -45,7 +45,7 @@ class SettingsController {
     }
 
     public static function deleteRepo(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_settings'); Auth::verifyCsrf();
         $id    = $_POST['id'] ?? '';
         $repos = Storage::get('core/repos', []);
         $repos = array_values(array_filter($repos, fn($r) => $r['id'] !== $id));
@@ -54,7 +54,7 @@ class SettingsController {
     }
 
     public static function testRepo(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_settings'); Auth::verifyCsrf();
         $url = trim($_POST['url'] ?? '');
         header('Content-Type: application/json');
 

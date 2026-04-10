@@ -2,7 +2,7 @@
 
 class UsersController {
     public static function index(array $p): void {
-        Auth::require();
+        wc_can('manage_users');
         $users = Auth::getUsers();
         $flash = $_GET['msg'] ?? null;
         $error = $_GET['err'] ?? null;
@@ -10,7 +10,7 @@ class UsersController {
     }
 
     public static function create(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_users'); Auth::verifyCsrf();
         $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
         $role     = $_POST['role'] ?? 'admin';
@@ -25,7 +25,7 @@ class UsersController {
     }
 
     public static function delete(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_users'); Auth::verifyCsrf();
         $username = $_POST['username'] ?? '';
         if ($username === (Auth::user()['username'] ?? '')) {
             WordCore::redirect('/wc-admin/users?err=cannot_delete_self');
@@ -35,7 +35,7 @@ class UsersController {
     }
 
     public static function changePassword(array $p): void {
-        Auth::require(); Auth::verifyCsrf();
+        wc_can('manage_users'); Auth::verifyCsrf();
         $username = $_POST['username'] ?? '';
         $password = $_POST['password'] ?? '';
 
