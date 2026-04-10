@@ -7,7 +7,7 @@
 
 WordCore is a modern, flat-file PHP CMS designed for speed and simplicity. No MySQL, no migrations, no hosting headaches. Just upload and go.
 
-[**Download WordCore**](https://github.com/your-username/wordcore/releases) • [**Browse Addon Repo**](https://repo.wordcore.space/)
+[**Download WordCore**](https://github.com/MightyX3N-Patrick/wordcore/releases) • [**Browse Addon Repo**](https://repo.wordcore.space/)
 
 ---
 
