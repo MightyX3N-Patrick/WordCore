@@ -1,0 +1,24 @@
+{
+  "_comment": "Host this file as index.json at the root of your repository folder.",
+  "addons": [
+    {
+      "slug": "example-addon",
+      "name": "Example Addon",
+      "version": "1.0.0",
+      "description": "A starter addon showing how to use hooks and Storage.",
+      "author": "WordCore",
+      "download": "https://example.com/repo/example-addon.zip"
+    }
+  ],
+  "themes": [
+    {
+      "slug": "dark-theme",
+      "name": "Dark Theme",
+      "version": "1.0.0",
+      "description": "A clean dark theme.",
+      "author": "WordCore",
+      "preview_color": "#1a1a18",
+      "download": "https://example.com/repo/dark-theme.zip"
+    }
+  ]
+}

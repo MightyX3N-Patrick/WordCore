@@ -1,0 +1,8 @@
+{
+  "slug": "default",
+  "name": "Default",
+  "version": "1.0.0",
+  "description": "The built-in WordCore theme.",
+  "author": "WordCore",
+  "preview_color": "#e8e8e4"
+}

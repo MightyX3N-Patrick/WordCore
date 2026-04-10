@@ -1,0 +1,35 @@
+server {
+    listen 80;
+    server_name example.com;
+    root /var/www/wordcore;
+    index index.php;
+    charset utf-8;
+
+    # Block access to sensitive directories
+    location ~ ^/(data|core|admin|addons|themes)(/|$) {
+        deny all;
+        return 403;
+    }
+
+    # Allow public assets
+    location /public/ {
+        try_files $uri =404;
+    }
+
+    # Route everything else through index.php
+    location / {
+        try_files $uri $uri/ /index.php?_route=$uri&$args;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Deny access to hidden files
+    location ~ /\. {
+        deny all;
+    }
+}
