@@ -33,6 +33,7 @@ $me = Auth::user()['username'] ?? '';
         <td>
           <div style="display:flex;gap:6px;justify-content:flex-end;">
             <button class="btn btn-sm" onclick="togglePwForm('<?= $uid ?>', this)">Change password</button>
+            <button class="btn btn-sm" onclick="toggleRoleForm('<?= $uid ?>', this)">Change role</button>
             <?php if ($user['username'] !== $me): ?>
               <form method="POST" action="/wc-admin/users/delete" style="margin:0;">
                 <?php Auth::csrfField(); ?>
@@ -55,6 +56,28 @@ $me = Auth::user()['username'] ?? '';
               required minlength="6" autocomplete="new-password">
             <button class="btn btn-sm btn-primary" type="submit">Save</button>
             <button type="button" class="btn btn-sm" onclick="togglePwForm('<?= $uid ?>', null)">Cancel</button>
+          </form>
+        </td>
+      </tr>
+      <tr id="rolerow-<?= $uid ?>" style="display:none;">
+        <td colspan="4" style="padding:0 12px 14px;">
+          <form method="POST" action="/wc-admin/users/role"
+            style="display:flex;gap:8px;align-items:center;">
+            <?php Auth::csrfField(); ?>
+            <input type="hidden" name="username" value="<?= $uid ?>">
+            <select class="form-select" name="role" style="flex:1;max-width:220px;">
+              <?php
+              $roleOptions = class_exists('Roles') ? Roles::getOptions() : ['admin' => 'Admin', 'editor' => 'Editor'];
+              foreach ($roleOptions as $rSlug => $rName):
+              ?>
+                <option value="<?= htmlspecialchars($rSlug) ?>"
+                  <?= $user['role'] === $rSlug ? 'selected' : '' ?>>
+                  <?= htmlspecialchars($rName) ?>
+                </option>
+              <?php endforeach; ?>
+            </select>
+            <button class="btn btn-sm btn-primary" type="submit">Save</button>
+            <button type="button" class="btn btn-sm" onclick="toggleRoleForm('<?= $uid ?>', null)">Cancel</button>
           </form>
         </td>
       </tr>
@@ -81,8 +104,12 @@ $me = Auth::user()['username'] ?? '';
       <div class="form-group">
         <label class="form-label">Role</label>
         <select class="form-select" name="role">
-          <option value="admin">Admin</option>
-          <option value="editor">Editor</option>
+          <?php
+          $roleOptions = class_exists('Roles') ? Roles::getOptions() : ['admin' => 'Admin', 'editor' => 'Editor'];
+          foreach ($roleOptions as $rSlug => $rName):
+          ?>
+            <option value="<?= htmlspecialchars($rSlug) ?>"><?= htmlspecialchars($rName) ?></option>
+          <?php endforeach; ?>
         </select>
       </div>
       <div class="form-actions">
@@ -102,6 +129,17 @@ function togglePwForm(uid, btn) {
   else {
     var btns = document.querySelectorAll('button[onclick*="togglePwForm(\'' + uid + '\'"]');
     if (btns.length) btns[0].textContent = 'Change password';
+  }
+}
+
+function toggleRoleForm(uid, btn) {
+  var row = document.getElementById('rolerow-' + uid);
+  var open = row.style.display === 'none';
+  row.style.display = open ? 'table-row' : 'none';
+  if (btn) btn.textContent = open ? 'Cancel' : 'Change role';
+  else {
+    var btns = document.querySelectorAll('button[onclick*="toggleRoleForm(\'' + uid + '\'"]');
+    if (btns.length) btns[0].textContent = 'Change role';
   }
 }
 </script>
