@@ -85,7 +85,7 @@ $value = Storage::get('my-addon/settings');
 Storage::set('my-addon/settings', ['key' => 'value']);
 
 // Add an admin sidebar link
-AddonManager::registerNavItem('My Addon', '/admin/my-addon', 30);
+AddonManager::registerNavItem('My Addon', '/wc-admin/my-addon', 30);
 ```
 
 ### Hooks & Storage API
